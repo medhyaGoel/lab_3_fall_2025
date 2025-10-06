@@ -61,20 +61,30 @@ class InverseKinematics(Node):
             # Compute the cost function and the squared L2 norm of the error
             # return the cost and the squared L2 norm of the error
             ################################################################################################
-            # TODO: Implement the cost function
+            current_ee = self.forward_kinematics(*theta)
+            l1 = np.abs(current_ee - target_ee)
+            cost = np.sum(l1**2)
+            return cost, l1
             # HINT: You can use the * notation on a list to "unpack" a list
             ################################################################################################
-            return None, None
 
         def gradient(theta, epsilon=1e-3):
             # Compute the gradient of the cost function using finite differences
             ################################################################################################
-            # TODO: Implement the gradient computation
+            grad = np.zeros_like(theta)
+            for i in range(len(theta)):
+                theta_plus = np.array(theta)
+                theta_minus = np.array(theta)
+                theta_plus[i] += epsilon
+                theta_minus[i] -= epsilon
+                cost_plus, _ = cost_function(theta_plus)
+                cost_minus, _ = cost_function(theta_minus)
+                grad[i] = (cost_plus - cost_minus) / (2 * epsilon)
+            return grad
             ################################################################################################
-            return
 
         theta = np.array(initial_guess)
-        learning_rate = None # TODO: Set the learning rate
+        learning_rate = 5 #  Set the learning rate
         max_iterations = None # TODO: Set the maximum number of iterations
         tolerance = None # TODO: Set the tolerance for the L1 norm of the error
 
@@ -86,6 +96,11 @@ class InverseKinematics(Node):
             ################################################################################################
             # TODO: Implement the gradient update. Use the cost function you implemented, and use tolerance t
             # to determine if IK has converged
+            theta -= learning_rate * grad
+            cost, l1 = cost_function(theta)
+            cost_l.append(cost)
+            if l1 < tolerance:
+                break
             # TODO (BONUS): Implement the (quasi-)Newton's method instead of finite differences for faster convergence
             ################################################################################################
 
