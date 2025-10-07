@@ -229,12 +229,48 @@ class InverseKinematics(Node):
         return theta
 
     def interpolate_triangle(self, t):
-        # Intepolate between the three triangle positions in the self.ee_triangle_positions
+
+        # Interpolate between the three triangle positions in the self.ee_triangle_positions
+
         # based on the current time t
+
         ################################################################################################
+
         # TODO: Implement the interpolation function
+
         ################################################################################################
-        return
+
+        # Normalize t to loop every 3 seconds
+
+        t_mod = t % 3.0
+
+       
+
+        # Determine which edge we're on and interpolate
+
+        if t_mod < 1.0:
+
+            # Between vertex 0 and vertex 1 (0 <= t < 1)
+
+            alpha = t_mod
+
+            return (1 - alpha) * self.ee_triangle_positions[0] + alpha * self.ee_triangle_positions[1]
+
+        elif t_mod < 2.0:
+
+            # Between vertex 1 and vertex 2 (1 <= t < 2)
+
+            alpha = t_mod - 1.0
+
+            return (1 - alpha) * self.ee_triangle_positions[1] + alpha * self.ee_triangle_positions[2]
+
+        else:
+
+            # Between vertex 2 and vertex 0 (2 <= t < 3)
+
+            alpha = t_mod - 2.0
+
+            return (1 - alpha) * self.ee_triangle_positions[2] + alpha * self.ee_triangle_positions[0]
 
     def ik_timer_callback(self):
         if self.joint_positions is not None:
