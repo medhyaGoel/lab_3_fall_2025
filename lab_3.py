@@ -136,7 +136,7 @@ class InverseKinematics(Node):
 
         # T_0_1 (base_link to leg_front_l_1)
 
-        T_0_1 = translation(0.07500, -0.0445, 0) @ rotation_x(1.57080) @ rotation_z(-theta1)
+        T_0_1 = translation(0.07500, -0.0445, 0) @ rotation_x(1.57080) @ rotation_z(theta1)
 
 
 
@@ -152,13 +152,13 @@ class InverseKinematics(Node):
 
         ## Implement the transformation matrix from leg_front_l_2 to leg_front_l_3
 
-        T_2_3 = translation(0, -0.0494, 0.0685) @ rotation_y(1.5708) @ rotation_z(-theta3)
+        T_2_3 = translation(0, -0.0494, 0.0685) @ rotation_y(1.5708) @ rotation_z(theta3)
 
 
 
         # T_3_ee (leg_front_l_3 to end-effector)
 
-        T_3_ee = translation(0.06231, -0.06216, -0.018)
+        T_3_ee = translation(0.06231, -0.06216, 0.018)
 
 
 
