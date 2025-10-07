@@ -219,7 +219,7 @@ class InverseKinematics(Node):
             theta -= learning_rate * grad
             cost, l1 = cost_function(theta)
             cost_l.append(cost)
-            if l1 < tolerance:
+            if np.sum(l1) < tolerance:
                 break
             # TODO (BONUS): Implement the (quasi-)Newton's method instead of finite differences for faster convergence
             ################################################################################################
