@@ -182,8 +182,8 @@ class InverseKinematics(Node):
             # return the cost and the squared L2 norm of the error
             ################################################################################################
             current_ee = self.forward_kinematics(*theta)
-            l1 = np.abs(current_ee - target_ee)
-            cost = np.sum(l1**2)
+            l1 = np.sum(np.abs(current_ee - target_ee))
+            cost = np.sum((current_ee - target_ee)**2)
             return cost, l1
             # HINT: You can use the * notation on a list to "unpack" a list
             ################################################################################################
@@ -219,7 +219,7 @@ class InverseKinematics(Node):
             theta -= learning_rate * grad
             cost, l1 = cost_function(theta)
             cost_l.append(cost)
-            if np.sum(l1) < tolerance:
+            if l1 < tolerance:
                 break
             # TODO (BONUS): Implement the (quasi-)Newton's method instead of finite differences for faster convergence
             ################################################################################################
